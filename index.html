@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodTune - 音乐情感仪表板</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 MoodTune</h1>
+            <p class="subtitle">音乐情感分析仪表板</p>
+        </header>
+
+        <main>
+            <!-- 收听时间线部分 -->
+            <section class="dashboard-section">
+                <h2>收听时间线</h2>
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </section>
+
+            <!-- 情感雷达部分 -->
+            <section class="dashboard-section">
+                <h2>情感雷达</h2>
+                <div class="chart-container radar-container">
+                    <canvas id="emotionRadarChart"></canvas>
+                </div>
+            </section>
+
+            <!-- AI推荐部分 -->
+            <section class="dashboard-section">
+                <h2>AI 推荐</h2>
+                <div class="recommendation-card">
+                    <div class="ai-generate-section">
+                        <button id="generateSummaryBtn" class="generate-btn">
+                            <span class="btn-text">🤖 生成心情摘要</span>
+                            <span class="btn-loading" style="display: none;">生成中...</span>
+                        </button>
+                    </div>
+                    <div class="mood-summary">
+                        <h3>今日心情摘要</h3>
+                        <p id="moodSummary" class="summary-text">加载中...</p>
+                        <div id="aiMoodSummary" class="summary-text ai-summary" style="display: none;">
+                            <!-- AI 生成的心情摘要将显示在这里 -->
+                        </div>
+                    </div>
+                    <div class="genre-suggestions">
+                        <h3>推荐流派</h3>
+                        <div id="genreList" class="genre-list">
+                            <!-- 动态生成的流派标签 -->
+                        </div>
+                        <div id="aiGenreList" class="genre-list ai-genre-list" style="display: none;">
+                            <!-- AI 生成的流派推荐将显示在这里 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 MoodTune. 用音乐感知情感</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
