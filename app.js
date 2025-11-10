@@ -1,4 +1,4 @@
-// 颜色配置
+// Color configuration
 const colors = {
     blue: '#4a90e2',
     orange: '#ff6b6b',
@@ -8,12 +8,12 @@ const colors = {
     card: '#16213e'
 };
 
-// 全局变量
+// Global variables
 let musicData = [];
 let timelineChart = null;
 let emotionRadarChart = null;
 
-// 加载数据
+// Load data
 async function loadData() {
     try {
         const response = await fetch('emotions.json');
@@ -21,31 +21,31 @@ async function loadData() {
         musicData = data.songs;
         initializeDashboard();
     } catch (error) {
-        console.error('加载数据失败:', error);
-        document.getElementById('moodSummary').textContent = '数据加载失败，请检查 emotions.json 文件。';
+        console.error('Failed to load data:', error);
+        document.getElementById('moodSummary').textContent = 'Failed to load data. Please check the emotions.json file.';
     }
 }
 
-// 初始化仪表板
+// Initialize dashboard
 function initializeDashboard() {
     createTimelineChart();
     createEmotionRadarChart();
     generateAIRecommendations();
 }
 
-// 创建时间线图表
+// Create timeline chart
 function createTimelineChart() {
     const ctx = document.getElementById('timelineChart').getContext('2d');
     
-    // 按日期分组数据
+    // Group data by date
     const dailyData = groupByDate(musicData);
     const dates = Object.keys(dailyData).sort();
     const listeningTimes = dates.map(date => {
         const songs = dailyData[date];
-        return songs.reduce((total, song) => total + song.duration, 0) / 60; // 转换为分钟
+        return songs.reduce((total, song) => total + song.duration, 0) / 60; // Convert to minutes
     });
 
-    // 格式化日期显示
+    // Format date display
     const formattedDates = dates.map(date => {
         const d = new Date(date);
         return `${d.getMonth() + 1}/${d.getDate()}`;
@@ -56,7 +56,7 @@ function createTimelineChart() {
         data: {
             labels: formattedDates,
             datasets: [{
-                label: '收听时间（分钟）',
+                label: 'Listening Time (minutes)',
                 data: listeningTimes,
                 backgroundColor: `rgba(74, 144, 226, 0.7)`,
                 borderColor: colors.blue,
@@ -88,7 +88,7 @@ function createTimelineChart() {
                     displayColors: true,
                     callbacks: {
                         label: function(context) {
-                            return `收听时间: ${context.parsed.y.toFixed(1)} 分钟`;
+                            return `Listening Time: ${context.parsed.y.toFixed(1)} minutes`;
                         }
                     }
                 }
@@ -114,7 +114,7 @@ function createTimelineChart() {
                             size: 11
                         },
                         callback: function(value) {
-                            return value + ' 分钟';
+                            return value + ' min';
                         }
                     },
                     grid: {
@@ -127,19 +127,19 @@ function createTimelineChart() {
     });
 }
 
-// 创建情感雷达图
+// Create emotion radar chart
 function createEmotionRadarChart() {
     const ctx = document.getElementById('emotionRadarChart').getContext('2d');
     
-    // 计算平均情感值
+    // Calculate average emotion values
     const emotionScores = calculateAverageEmotions(musicData);
     
     emotionRadarChart = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['快乐', '忧郁', '活力', '平静'],
+            labels: ['Joyful', 'Melancholic', 'Energetic', 'Calm'],
             datasets: [{
-                label: '情感分布',
+                label: 'Emotion Distribution',
                 data: [
                     emotionScores.joyful * 100,
                     emotionScores.melancholic * 100,
@@ -217,16 +217,16 @@ function createEmotionRadarChart() {
     });
 }
 
-// 生成AI推荐
+// Generate AI recommendations
 function generateAIRecommendations() {
     const emotionScores = calculateAverageEmotions(musicData);
     const moodSummary = generateMoodSummary(emotionScores);
     const recommendedGenres = generateGenreRecommendations(emotionScores);
     
-    // 更新心情摘要
+    // Update mood summary
     document.getElementById('moodSummary').textContent = moodSummary;
     
-    // 更新推荐流派
+    // Update recommended genres
     const genreList = document.getElementById('genreList');
     genreList.innerHTML = '';
     
@@ -239,7 +239,7 @@ function generateAIRecommendations() {
     });
 }
 
-// 按日期分组数据
+// Group data by date
 function groupByDate(songs) {
     const grouped = {};
     songs.forEach(song => {
@@ -252,7 +252,7 @@ function groupByDate(songs) {
     return grouped;
 }
 
-// 计算平均情感值
+// Calculate average emotion values
 function calculateAverageEmotions(songs) {
     const totals = {
         joyful: 0,
@@ -277,45 +277,38 @@ function calculateAverageEmotions(songs) {
     };
 }
 
-// 生成心情摘要
+// Generate mood summary
 function generateMoodSummary(emotionScores) {
     const dominantEmotion = getDominantEmotion(emotionScores);
     const intensity = getIntensity(emotionScores[dominantEmotion]);
     
     const summaries = {
         joyful: {
-            high: '今天你的音乐选择充满了快乐和正能量！你倾向于选择 upbeat 和令人愉悦的旋律，这表明你的心情非常积极。继续保持这种好心情！',
-            medium: '你的音乐偏好显示了一种轻松愉快的心情。你享受那些能够带来快乐和满足感的歌曲。',
-            low: '你的音乐选择中带有一些快乐的元素，但可能还需要更多积极能量的注入。'
+            high: 'Your music choices today are filled with joy and positive energy! You tend to choose upbeat and delightful melodies, indicating a very positive mood. Keep up the good vibes!',
+            medium: 'Your music preferences show a light and cheerful mood. You enjoy songs that bring happiness and satisfaction.',
+            low: 'Your music choices contain some joyful elements, but you might benefit from more positive energy injection.'
         },
         melancholic: {
-            high: '你的音乐选择反映出一种深沉、内省的情感状态。你被那些富有情感深度和忧郁美的旋律所吸引。这种情绪是创作和思考的好时机。',
-            medium: '你的音乐偏好显示了一种温和的忧郁倾向。你欣赏那些能够触动心灵、引发思考的歌曲。',
-            low: '你的音乐选择中偶尔带有一些忧郁的色彩，但整体上保持平衡。'
+            high: 'Your music choices reflect a deep, introspective emotional state. You are drawn to melodies rich in emotional depth and melancholic beauty. This mood is perfect for creation and reflection.',
+            medium: 'Your music preferences show a gentle melancholic tendency. You appreciate songs that touch the heart and inspire contemplation.',
+            low: 'Your music choices occasionally contain melancholic tones, but overall remain balanced.'
         },
         energetic: {
-            high: '你的音乐选择充满了活力和动感！你倾向于选择节奏强烈、充满能量的歌曲，这表明你处于一个充满活力的状态。',
-            medium: '你的音乐偏好显示了一种积极的能量水平。你享受那些能够提升心情、激发动力的歌曲。',
-            low: '你的音乐选择相对温和，可以考虑添加一些更有活力的歌曲来提升能量。'
+            high: 'Your music choices are full of vitality and dynamism! You tend to choose songs with strong rhythms and high energy, indicating you are in an energetic state.',
+            medium: 'Your music preferences show a positive energy level. You enjoy songs that boost your mood and inspire motivation.',
+            low: 'Your music choices are relatively mild. Consider adding some more energetic songs to boost your energy.'
         },
         calm: {
-            high: '你的音乐选择非常平静和放松。你倾向于选择那些能够带来内心平静和安宁的旋律，这表明你正在寻求一种平衡和宁静的状态。',
-            medium: '你的音乐偏好显示了一种平和的心态。你欣赏那些能够帮助放松和舒缓压力的歌曲。',
-            low: '你的音乐选择相对活跃，可以考虑添加一些平静的旋律来平衡心情。'
+            high: 'Your music choices are very peaceful and relaxing. You tend to choose melodies that bring inner peace and tranquility, indicating you are seeking balance and serenity.',
+            medium: 'Your music preferences show a peaceful mindset. You appreciate songs that help you relax and relieve stress.',
+            low: 'Your music choices are relatively active. Consider adding some calming melodies to balance your mood.'
         }
-    };
-    
-    const emotionLabels = {
-        joyful: '快乐',
-        melancholic: '忧郁',
-        energetic: '活力',
-        calm: '平静'
     };
     
     return summaries[dominantEmotion][intensity];
 }
 
-// 获取主导情感
+// Get dominant emotion
 function getDominantEmotion(emotionScores) {
     let maxScore = 0;
     let dominantEmotion = 'joyful';
@@ -330,47 +323,47 @@ function getDominantEmotion(emotionScores) {
     return dominantEmotion;
 }
 
-// 获取强度级别
+// Get intensity level
 function getIntensity(score) {
     if (score >= 0.7) return 'high';
     if (score >= 0.4) return 'medium';
     return 'low';
 }
 
-// 生成流派推荐
+// Generate genre recommendations
 function generateGenreRecommendations(emotionScores) {
     const recommendations = [];
     
-    // 基于情感分数推荐流派
+    // Recommend genres based on emotion scores
     if (emotionScores.joyful > 0.6) {
-        recommendations.push('流行音乐');
-        recommendations.push('电子舞曲');
+        recommendations.push('Pop');
+        recommendations.push('Electronic Dance');
     }
     
     if (emotionScores.melancholic > 0.6) {
-        recommendations.push('爵士乐');
-        recommendations.push('民谣');
+        recommendations.push('Jazz');
+        recommendations.push('Folk');
     }
     
     if (emotionScores.energetic > 0.6) {
-        recommendations.push('摇滚乐');
+        recommendations.push('Rock');
         recommendations.push('Hip-Hop');
     }
     
     if (emotionScores.calm > 0.6) {
-        recommendations.push('轻音乐');
-        recommendations.push('新世纪音乐');
+        recommendations.push('Light Music');
+        recommendations.push('New Age');
     }
     
-    // 如果没有明显的偏好，提供通用推荐
+    // If no clear preference, provide general recommendations
     if (recommendations.length === 0) {
-        recommendations.push('流行音乐');
-        recommendations.push('轻音乐');
-        recommendations.push('民谣');
+        recommendations.push('Pop');
+        recommendations.push('Light Music');
+        recommendations.push('Folk');
     }
     
-    // 确保至少返回3个推荐，最多4个
-    const defaultRecommendations = ['流行音乐', '轻音乐', '民谣', '电子音乐'];
+    // Ensure at least 3 recommendations, maximum 4
+    const defaultRecommendations = ['Pop', 'Light Music', 'Folk', 'Electronic'];
     while (recommendations.length < 3) {
         const randomGenre = defaultRecommendations[Math.floor(Math.random() * defaultRecommendations.length)];
         if (!recommendations.includes(randomGenre)) {
@@ -381,10 +374,10 @@ function generateGenreRecommendations(emotionScores) {
     return recommendations.slice(0, 4);
 }
 
-// API 配置
+// API configuration
 const API_BASE_URL = 'http://localhost:5000';
 
-// 生成 AI 心情摘要
+// Generate AI mood summary
 async function generateAISummary() {
     const generateBtn = document.getElementById('generateSummaryBtn');
     const btnText = generateBtn.querySelector('.btn-text');
@@ -392,13 +385,13 @@ async function generateAISummary() {
     const aiMoodSummary = document.getElementById('aiMoodSummary');
     const aiGenreList = document.getElementById('aiGenreList');
     
-    // 禁用按钮并显示加载状态
+    // Disable button and show loading state
     generateBtn.disabled = true;
     btnText.style.display = 'none';
     btnLoading.style.display = 'inline';
     
     try {
-        // 准备请求数据
+        // Prepare request data
         const requestData = {
             songs: musicData.map(song => ({
                 title: song.title,
@@ -406,7 +399,7 @@ async function generateAISummary() {
             }))
         };
         
-        // 调用后端 API
+        // Call backend API
         const response = await fetch(`${API_BASE_URL}/generate-summary`, {
             method: 'POST',
             headers: {
@@ -421,11 +414,11 @@ async function generateAISummary() {
         
         const data = await response.json();
         
-        // 显示 AI 生成的心情摘要
-        aiMoodSummary.textContent = data.mood_summary || '无法生成心情摘要。';
+        // Display AI-generated mood summary
+        aiMoodSummary.textContent = data.mood_summary || 'Unable to generate mood summary.';
         aiMoodSummary.style.display = 'block';
         
-        // 显示 AI 生成的流派推荐
+        // Display AI-generated genre recommendations
         aiGenreList.innerHTML = '';
         if (data.suggested_genres && data.suggested_genres.length > 0) {
             const genreColors = ['blue', 'orange', 'green', 'purple'];
@@ -438,23 +431,23 @@ async function generateAISummary() {
             aiGenreList.style.display = 'flex';
         }
         
-        // 滚动到 AI 摘要区域
+        // Scroll to AI summary area
         aiMoodSummary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         
     } catch (error) {
-        console.error('生成 AI 摘要失败:', error);
-        aiMoodSummary.textContent = `错误: 无法连接到服务器。请确保 Flask 后端正在运行 (${API_BASE_URL})。`;
+        console.error('Failed to generate AI summary:', error);
+        aiMoodSummary.textContent = `Error: Unable to connect to server. Please ensure the Flask backend is running (${API_BASE_URL}).`;
         aiMoodSummary.style.display = 'block';
         aiMoodSummary.style.color = '#ff6b6b';
     } finally {
-        // 恢复按钮状态
+        // Restore button state
         generateBtn.disabled = false;
         btnText.style.display = 'inline';
         btnLoading.style.display = 'none';
     }
 }
 
-// 初始化事件监听器
+// Initialize event listeners
 function initializeEventListeners() {
     const generateBtn = document.getElementById('generateSummaryBtn');
     if (generateBtn) {
@@ -462,7 +455,7 @@ function initializeEventListeners() {
     }
 }
 
-// 页面加载完成后初始化
+// Initialize when page loads
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
     initializeEventListeners();

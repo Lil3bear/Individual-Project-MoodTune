@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoodTune - 音乐情感仪表板</title>
+    <title>MoodTune - Music Emotion Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -11,50 +11,50 @@
     <div class="container">
         <header>
             <h1>🎵 MoodTune</h1>
-            <p class="subtitle">音乐情感分析仪表板</p>
+            <p class="subtitle">Music Emotion Analysis Dashboard</p>
         </header>
 
         <main>
-            <!-- 收听时间线部分 -->
+            <!-- Listening Timeline Section -->
             <section class="dashboard-section">
-                <h2>收听时间线</h2>
+                <h2>Listening Timeline</h2>
                 <div class="chart-container">
                     <canvas id="timelineChart"></canvas>
                 </div>
             </section>
 
-            <!-- 情感雷达部分 -->
+            <!-- Emotion Radar Section -->
             <section class="dashboard-section">
-                <h2>情感雷达</h2>
+                <h2>Emotion Radar</h2>
                 <div class="chart-container radar-container">
                     <canvas id="emotionRadarChart"></canvas>
                 </div>
             </section>
 
-            <!-- AI推荐部分 -->
+            <!-- AI Recommendations Section -->
             <section class="dashboard-section">
-                <h2>AI 推荐</h2>
+                <h2>AI Recommendations</h2>
                 <div class="recommendation-card">
                     <div class="ai-generate-section">
                         <button id="generateSummaryBtn" class="generate-btn">
-                            <span class="btn-text">🤖 生成心情摘要</span>
-                            <span class="btn-loading" style="display: none;">生成中...</span>
+                            <span class="btn-text">🤖 Generate Mood Summary</span>
+                            <span class="btn-loading" style="display: none;">Generating...</span>
                         </button>
                     </div>
                     <div class="mood-summary">
-                        <h3>今日心情摘要</h3>
-                        <p id="moodSummary" class="summary-text">加载中...</p>
+                        <h3>Today's Mood Summary</h3>
+                        <p id="moodSummary" class="summary-text">Loading...</p>
                         <div id="aiMoodSummary" class="summary-text ai-summary" style="display: none;">
-                            <!-- AI 生成的心情摘要将显示在这里 -->
+                            <!-- AI-generated mood summary will appear here -->
                         </div>
                     </div>
                     <div class="genre-suggestions">
-                        <h3>推荐流派</h3>
+                        <h3>Recommended Genres</h3>
                         <div id="genreList" class="genre-list">
-                            <!-- 动态生成的流派标签 -->
+                            <!-- Dynamically generated genre tags -->
                         </div>
                         <div id="aiGenreList" class="genre-list ai-genre-list" style="display: none;">
-                            <!-- AI 生成的流派推荐将显示在这里 -->
+                            <!-- AI-generated genre recommendations will appear here -->
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
         </main>
 
         <footer>
-            <p>&copy; 2024 MoodTune. 用音乐感知情感</p>
+            <p>&copy; 2024 MoodTune. Feel emotions through music.</p>
         </footer>
     </div>
 

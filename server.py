@@ -4,25 +4,25 @@ import json
 import random
 
 app = Flask(__name__)
-CORS(app)  # 允许跨域请求
+CORS(app)  # Enable cross-origin requests
 
-# 模拟 OpenAI API 调用的占位函数
+# Placeholder function to simulate OpenAI API call
 def simulate_openai_api(emotion_data):
     """
-    模拟 OpenAI API 调用，基于情感数据生成心情摘要和推荐
+    Simulate OpenAI API call, generate mood summary and recommendations based on emotion data
     
     Args:
-        emotion_data: 包含歌曲情感数据的列表
+        emotion_data: List containing song emotion data
     
     Returns:
-        dict: 包含 mood_summary 和 suggested_genres 的字典
+        dict: Dictionary containing mood_summary and suggested_genres
     """
-    # 计算平均情感分数
+    # Calculate average emotion scores
     total_songs = len(emotion_data)
     if total_songs == 0:
         return {
-            "mood_summary": "暂无音乐数据，无法生成心情摘要。",
-            "suggested_genres": ["流行音乐", "轻音乐", "民谣"]
+            "mood_summary": "No music data available. Unable to generate mood summary.",
+            "suggested_genres": ["Pop", "Light Music", "Folk"]
         }
     
     avg_emotions = {
@@ -32,39 +32,39 @@ def simulate_openai_api(emotion_data):
         "calm": sum(song.get("emotions", {}).get("calm", 0) for song in emotion_data) / total_songs
     }
     
-    # 确定主导情感
+    # Determine dominant emotion
     dominant_emotion = max(avg_emotions.items(), key=lambda x: x[1])
     emotion_name = dominant_emotion[0]
     emotion_score = dominant_emotion[1]
     
-    # 生成心情摘要
+    # Generate mood summaries
     mood_summaries = {
         "joyful": [
-            f"根据你的音乐收听习惯分析，你最近倾向于选择快乐和积极的音乐。你的快乐情感得分达到 {emotion_score:.1%}，这表明你的心情非常乐观！继续保持这种正能量，你的音乐选择反映了你内心的阳光和活力。",
-            f"你的音乐偏好显示出强烈的快乐倾向（{emotion_score:.1%}）。你被那些充满活力和愉悦感的旋律所吸引，这种音乐选择能够有效提升心情，带来积极的情绪体验。",
-            f"分析显示，你的音乐库中快乐类型的歌曲占据了主导地位（{emotion_score:.1%}）。这种音乐偏好表明你正在享受生活中的美好时刻，通过音乐传递正能量。"
+            f"Based on your music listening habits, you've been choosing joyful and positive music lately. Your joy emotion score reaches {emotion_score:.1%}, indicating a very optimistic mood! Keep up this positive energy. Your music choices reflect the sunshine and vitality within you.",
+            f"Your music preferences show a strong joyful tendency ({emotion_score:.1%}). You're drawn to melodies full of energy and delight. These music choices can effectively boost your mood and bring positive emotional experiences.",
+            f"Analysis shows that joyful songs dominate your music library ({emotion_score:.1%}). This music preference indicates you're enjoying the beautiful moments in life and spreading positive energy through music."
         ],
         "melancholic": [
-            f"你的音乐收听数据揭示了一种深沉的情感状态。忧郁情感得分达到 {emotion_score:.1%}，你倾向于选择那些富有情感深度和内涵的歌曲。这种音乐偏好可能反映了你对内省和思考的追求，音乐成为了你情感表达的出口。",
-            f"根据分析，你的音乐选择展现出明显的忧郁倾向（{emotion_score:.1%}）。你被那些能够触动心灵、引发共鸣的旋律所吸引。这种音乐偏好可以帮助你处理情感，促进自我反思和成长。",
-            f"你的音乐偏好显示了一种温和而深沉的忧郁倾向（{emotion_score:.1%}）。你欣赏那些充满情感层次的歌曲，这种选择反映了你对音乐艺术性的追求和对情感深度的理解。"
+            f"Your music listening data reveals a deep emotional state. Your melancholic emotion score reaches {emotion_score:.1%}, and you tend to choose songs rich in emotional depth and meaning. This music preference may reflect your pursuit of introspection and contemplation, with music becoming an outlet for emotional expression.",
+            f"Based on analysis, your music choices show a clear melancholic tendency ({emotion_score:.1%}). You're drawn to melodies that touch the heart and resonate deeply. This music preference can help you process emotions and promote self-reflection and growth.",
+            f"Your music preferences show a gentle yet deep melancholic tendency ({emotion_score:.1%}). You appreciate songs with rich emotional layers. This choice reflects your pursuit of musical artistry and understanding of emotional depth."
         ],
         "energetic": [
-            f"你的音乐收听习惯显示出强烈的活力和动感！活力情感得分高达 {emotion_score:.1%}，你倾向于选择节奏强烈、充满能量的歌曲。这种音乐偏好表明你正处于一个充满活力和动力的状态，音乐成为了你释放能量的途径。",
-            f"分析发现，你的音乐选择充满了活力和激情（{emotion_score:.1%}）。你被那些能够激发动力、提升能量的歌曲所吸引。这种音乐偏好可以帮助你保持积极向上的心态，增强行动力。",
-            f"你的音乐偏好显示出明显的活力倾向（{emotion_score:.1%}）。你享受那些节奏明快、充满动感的旋律，这种选择反映了你对生活的热情和积极态度。"
+            f"Your music listening habits show strong vitality and dynamism! Your energetic emotion score is as high as {emotion_score:.1%}, and you tend to choose songs with strong rhythms and high energy. This music preference indicates you're in a state full of vitality and motivation, with music becoming a way to release energy.",
+            f"Analysis reveals that your music choices are full of vitality and passion ({emotion_score:.1%}). You're drawn to songs that can inspire motivation and boost energy. This music preference can help you maintain a positive mindset and enhance your drive.",
+            f"Your music preferences show a clear energetic tendency ({emotion_score:.1%}). You enjoy melodies with upbeat rhythms and dynamic energy. This choice reflects your passion for life and positive attitude."
         ],
         "calm": [
-            f"你的音乐收听数据揭示了一种寻求平静和平衡的状态。平静情感得分达到 {emotion_score:.1%}，你倾向于选择那些能够带来内心安宁和放松的歌曲。这种音乐偏好表明你正在通过音乐来调节心情，寻求心灵的平静。",
-            f"根据分析，你的音乐选择展现出明显的平静倾向（{emotion_score:.1%}）。你被那些柔和、舒缓的旋律所吸引，这种音乐偏好可以帮助你放松身心，缓解压力，促进内心的平衡。",
-            f"你的音乐偏好显示了一种平和宁静的状态（{emotion_score:.1%}）。你欣赏那些能够带来内心平静和安宁的歌曲，这种选择反映了你对生活质量的追求和对内心世界的关注。"
+            f"Your music listening data reveals a state of seeking peace and balance. Your calm emotion score reaches {emotion_score:.1%}, and you tend to choose songs that bring inner peace and relaxation. This music preference indicates you're using music to regulate your mood and seek inner tranquility.",
+            f"Based on analysis, your music choices show a clear calm tendency ({emotion_score:.1%}). You're drawn to soft, soothing melodies. This music preference can help you relax, relieve stress, and promote inner balance.",
+            f"Your music preferences show a peaceful and serene state ({emotion_score:.1%}). You appreciate songs that bring inner peace and tranquility. This choice reflects your pursuit of quality of life and attention to your inner world."
         ]
     }
     
-    # 随机选择一个摘要
+    # Randomly select a summary
     mood_summary = random.choice(mood_summaries.get(emotion_name, mood_summaries["calm"]))
     
-    # 生成流派推荐
+    # Generate genre recommendations
     genre_suggestions = generate_genre_suggestions(avg_emotions)
     
     return {
@@ -73,48 +73,48 @@ def simulate_openai_api(emotion_data):
     }
 
 def generate_genre_suggestions(avg_emotions):
-    """基于情感分数生成流派推荐"""
+    """Generate genre recommendations based on emotion scores"""
     suggestions = []
     
-    # 基于情感分数推荐流派
+    # Recommend genres based on emotion scores
     if avg_emotions["joyful"] > 0.6:
-        suggestions.extend(["流行音乐", "电子舞曲", "放克音乐"])
+        suggestions.extend(["Pop", "Electronic Dance", "Funk"])
     elif avg_emotions["joyful"] > 0.4:
-        suggestions.extend(["流行音乐", "轻音乐"])
+        suggestions.extend(["Pop", "Light Music"])
     
     if avg_emotions["melancholic"] > 0.6:
-        suggestions.extend(["爵士乐", "民谣", "蓝调"])
+        suggestions.extend(["Jazz", "Folk", "Blues"])
     elif avg_emotions["melancholic"] > 0.4:
-        suggestions.extend(["民谣", "轻音乐"])
+        suggestions.extend(["Folk", "Light Music"])
     
     if avg_emotions["energetic"] > 0.6:
-        suggestions.extend(["摇滚乐", "Hip-Hop", "电子音乐"])
+        suggestions.extend(["Rock", "Hip-Hop", "Electronic"])
     elif avg_emotions["energetic"] > 0.4:
-        suggestions.extend(["摇滚乐", "流行音乐"])
+        suggestions.extend(["Rock", "Pop"])
     
     if avg_emotions["calm"] > 0.6:
-        suggestions.extend(["轻音乐", "新世纪音乐", "环境音乐"])
+        suggestions.extend(["Light Music", "New Age", "Ambient"])
     elif avg_emotions["calm"] > 0.4:
-        suggestions.extend(["轻音乐", "爵士乐"])
+        suggestions.extend(["Light Music", "Jazz"])
     
-    # 如果没有明显的偏好，提供通用推荐
+    # If no clear preference, provide general recommendations
     if not suggestions:
-        suggestions = ["流行音乐", "轻音乐", "民谣"]
+        suggestions = ["Pop", "Light Music", "Folk"]
     
-    # 去重并限制数量
+    # Remove duplicates and limit quantity
     unique_suggestions = list(dict.fromkeys(suggestions))
     return unique_suggestions[:4]
 
 @app.route('/generate-summary', methods=['POST'])
 def generate_summary():
     """
-    生成心情摘要的 API 端点
+    API endpoint to generate mood summary
     
-    期望的请求体:
+    Expected request body:
     {
         "songs": [
             {
-                "title": "歌曲名",
+                "title": "Song Name",
                 "emotions": {
                     "joyful": 0.8,
                     "melancholic": 0.1,
@@ -126,45 +126,44 @@ def generate_summary():
         ]
     }
     
-    返回:
+    Returns:
     {
-        "mood_summary": "心情摘要文本",
-        "suggested_genres": ["流派1", "流派2", ...]
+        "mood_summary": "Mood summary text",
+        "suggested_genres": ["Genre1", "Genre2", ...]
     }
     """
     try:
         data = request.get_json()
         
-        # 验证请求数据
+        # Validate request data
         if not data or 'songs' not in data:
             return jsonify({
-                "error": "请求数据格式错误，需要包含 'songs' 字段"
+                "error": "Invalid request data format. Must include 'songs' field"
             }), 400
         
         songs = data['songs']
         if not isinstance(songs, list) or len(songs) == 0:
             return jsonify({
-                "error": "songs 必须是非空数组"
+                "error": "songs must be a non-empty array"
             }), 400
         
-        # 调用模拟的 OpenAI API
+        # Call simulated OpenAI API
         result = simulate_openai_api(songs)
         
         return jsonify(result), 200
         
     except Exception as e:
         return jsonify({
-            "error": f"服务器错误: {str(e)}"
+            "error": f"Server error: {str(e)}"
         }), 500
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """健康检查端点"""
-    return jsonify({"status": "ok", "message": "MoodTune API 运行正常"}), 200
+    """Health check endpoint"""
+    return jsonify({"status": "ok", "message": "MoodTune API is running normally"}), 200
 
 if __name__ == '__main__':
-    print("启动 MoodTune Flask 服务器...")
-    print("API 端点: http://localhost:5000/generate-summary")
-    print("健康检查: http://localhost:5000/health")
+    print("Starting MoodTune Flask server...")
+    print("API endpoint: http://localhost:5000/generate-summary")
+    print("Health check: http://localhost:5000/health")
     app.run(debug=True, port=5000)
-
